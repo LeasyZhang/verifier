@@ -20,17 +20,14 @@ import java.util.Optional;
 @RunWith(SpringRunner.class)
 public class RcItemRepositoryTest {
 
-
     @Autowired
     private RcItemRepository rcItemRepository;
-
 
     @Test
     public void select() {
         Optional<RcItem> item = rcItemRepository.findById(37L);
         Assert.assertEquals(false, item.isPresent());
     }
-
 
     @Test
     @Rollback
