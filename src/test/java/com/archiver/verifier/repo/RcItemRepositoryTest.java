@@ -1,23 +1,24 @@
 package com.archiver.verifier.repo;
 
+import com.archiver.verifier.constant.DirectionType;
 import com.archiver.verifier.constant.ItemStatus;
 import com.archiver.verifier.constant.ItemType;
 import com.archiver.verifier.constant.StorageConstant;
 import com.archiver.verifier.entity.RcItem;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
-
-import static org.junit.Assert.*;
+import java.util.Optional;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class RcItemRepositoryTest {
-
 
 
     @Autowired
@@ -26,18 +27,13 @@ public class RcItemRepositoryTest {
 
     @Test
     public void select() {
-        //List<RcItem> rcItems = rcItemRepository.findAllByOwnerId(225829006L);
-        //rcItems.forEach(rcItem -> System.out.println(rcItem.toString()));
-
-        RcItem rcItem = rcItemRepository.findById(37L).get();
-        System.out.println(rcItem.toString());
-
-
-
+        Optional<RcItem> item = rcItemRepository.findById(37L);
+        Assert.assertEquals(false, item.isPresent());
     }
 
 
     @Test
+    @Rollback
     public void save() {
         RcItem rcItem = new RcItem();
 
@@ -53,13 +49,10 @@ public class RcItemRepositoryTest {
         rcItem.setArchiveTime(Instant.now());
         rcItem.setCreateTime(Instant.now());
         rcItem.setGenerateTime(Instant.now());
-
         rcItem.setExceptionCategoryId(300L);
         rcItem.setExtensionId(34432L);
+        rcItem.setDirection(DirectionType.INBOUND);
 
         rcItemRepository.save(rcItem);
     }
-
-
-
 }
